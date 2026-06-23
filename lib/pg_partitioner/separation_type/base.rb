@@ -21,6 +21,8 @@ module PgPartitioner
 
         custom_indexes.each do |custom_index|
           if custom_index.is_a?(Hash)
+            name = custom_index[:name]
+            custom_index[:name] = "index_#{partition_table_name}_#{name}" if name
             create_custom_index(partition_table_name, custom_index[:fields], **custom_index.except(:fields))
           else
             create_custom_index(partition_table_name, custom_index)
